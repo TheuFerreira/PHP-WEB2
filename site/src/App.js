@@ -4,6 +4,7 @@ import LoginPage from "./login/presenter/LoginPage";
 import Register from "./register/presenter/Register";
 import Home from "./home/presenter/Home";
 import CreateEventPage from "./create_event/presenter/CreateEventPage";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

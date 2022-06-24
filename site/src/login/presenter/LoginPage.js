@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useState } from 'react';
+import { ipAPI } from '../../utils/ips';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 const schema = yup
     .object()
@@ -34,7 +36,7 @@ export default function LoginPage() {
 
     const onSubmit = async (data) => {
 
-        fetch(`http://localhost/web2/api/login/signin/${data.email}/${data.password}`, {
+        fetch(`${ipAPI}/login/signin/${data.email}/${data.password}`, {
             method: 'GET'
         }).then((response) => {
             if (response.status === 204) {
@@ -50,34 +52,82 @@ export default function LoginPage() {
             setError('');
             console.log(json);
             navigate('/Inicio');
-        }).catch(() => {
-            setError('Estamos com problemas');
-        });
+        }).catch(() => {});
     }
 
     return (
-        <div>
-            <button 
-                type="button" 
-                onClick={() => navigate('/Registrar')}>Cadastre-se</button>
+        <Container fluid>
+            <Row className='vh-100'>
+                <Col className='d-flex justify-content-center align-items-center'>
+                    <Container 
+                        fluid
+                        className='p-4'
+                        style={{
+                            maxWidth: 475,
+                            borderRadius: 16,
+                            backgroundColor: 'white',
+                            boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.5)'
+                        }}
+                    >
+                        <Container className='d-flex justify-content-center mb-2'>
+                            <h2>Eventos</h2>
+                        </Container>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input 
-                    placeholder="example@example.com" 
-                    {...register('email')}/>
-                { errors.email && <span>{errors.email?.message}</span> }
+                        <Form 
+                            noValidate 
+                            validated={true} 
+                            onSubmit={handleSubmit(onSubmit)}
+                        >
+                            <Form.Group>
+                                <Form.Label>Email:</Form.Label>
+                                <Form.Control
+                                    placeholder="example@example.com" 
+                                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                    {...register('email')}
+                                />
 
-                <input 
-                    placeholder="******" 
-                    type={'password'}
-                    autoComplete="true"
-                    {...register('password')}/>
-                { errors.password && <span>{errors.password?.message}</span> }
+                                <Form.Control.Feedback type='invalid'>
+                                    {errors.email?.message}
+                                </Form.Control.Feedback>
+                            </Form.Group>
 
-                { error && <span>{error}</span> }
+                            <Form.Group>
+                                <Form.Label>Senha:</Form.Label>
+                                <Form.Control
+                                    placeholder="******" 
+                                    type={'password'}
+                                    autoComplete="true"
+                                    className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                    {...register('password')}
+                                />
 
-                <button type="submit">Entrar</button>
-            </form>
-        </div>
+                                <Form.Control.Feedback type='invalid'>
+                                    {errors.password?.message}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+
+                            <Row className='mb-2 mt-2'>
+                                { error && <span className='text-danger'>{error}</span> }
+                            </Row>
+
+                            <div className='d-flex justify-content-between'>
+                                <Button 
+                                    type="submit"
+                                >
+                                    Entrar
+                                </Button>
+
+                                <Button 
+                                    type="button" 
+                                    onClick={() => navigate('/Registrar')}
+                                >
+                                    Cadastre-se
+                                </Button>
+                            </div>
+                        </Form>
+                    </Container>
+                </Col>
+            </Row>
+        </Container>
     );
 }

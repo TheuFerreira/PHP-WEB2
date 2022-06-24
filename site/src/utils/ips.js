@@ -1,0 +1,1 @@
+export const ipAPI = 'http://localhost/web2/api';
