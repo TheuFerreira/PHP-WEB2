@@ -1,0 +1,12 @@
+-- Active: 1656035943272@@127.0.0.1@3306@events
+DROP SCHEMA IF EXISTS eventos;
+CREATE SCHEMA events;
+
+USE events;
+
+CREATE TABLE users(
+    id_user INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    fullname TEXT(100) NOT NULL,
+    email TEXT(100) NOT NULL,
+    password TEXT(50) NOT NULL
+);
