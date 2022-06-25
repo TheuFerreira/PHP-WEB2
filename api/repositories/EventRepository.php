@@ -15,9 +15,11 @@ class EventRepository {
 
     public function getAll() {
         $sql = '
-        SELECT id_event, id_user, title, description, local, date, 0 AS count_peoples 
-        FROM event
-        ORDER BY date ASC
+        SELECT e.id_event, e.id_user, e.title, e.description, e.local, e.date, COUNT(eu.id_user) AS count_peoples 
+        FROM event AS e
+        LEFT JOIN event_user AS eu ON eu.id_event = e.id_event
+        GROUP BY e.id_event
+        ORDER BY date ASC;
         ';
 
         $conn = $this->connection->getConnection();

@@ -2,6 +2,7 @@ import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 
 export default function EventItemComponent(props) {
     const data = props.data;
+    const usuario = props.usuario;
 
     const onEnter = () => {
         props.onClick(data.id_event);
@@ -17,7 +18,7 @@ export default function EventItemComponent(props) {
                 <Card.Title>{data.title}</Card.Title>
                 <Card.Text>{data.description}</Card.Text>
         
-                <Button onClick={onEnter}>Ingressar</Button>
+                { usuario.id_user !== data.id_user && <Button onClick={onEnter}>Ingressar</Button> }
             </Card.Body>
 
             <ListGroup>
