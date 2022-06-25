@@ -60,10 +60,12 @@ $app->post('/web2/api/login/register', function ($request, $response, $args) {
 });
 
 // Event
-$app->get('/web2/api/event/all', function ($request, $response, $args) {
+$app->get('/web2/api/event/all/{id_user}', function ($request, $response, $args) {
     try {
+        $idUser = $args['id_user'];
+
         $controller = new EventController();
-        $result = $controller->getAll();
+        $result = $controller->getAll($idUser);
 
         $response->getBody()->write($result);
         return $response;
@@ -92,12 +94,13 @@ $app->post('/web2/api/event/enter', function ($request, $response, $args) {
     }
 });
 
-$app->get('/web2/api/event/{id}', function ($request, $response, $args) {
+$app->get('/web2/api/event/{id_user}/{id_event}', function ($request, $response, $args) {
     try {
-        $idEvent = $args['id'];
+        $idUser = $args['id_user'];
+        $idEvent = $args['id_event'];
         
         $controller = new EventController();
-        $result = $controller->getById($idEvent);
+        $result = $controller->getById($idEvent, $idUser);
 
         $response->getBody()->write($result);
         return $response;
