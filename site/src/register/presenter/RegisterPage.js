@@ -34,7 +34,7 @@ export default function RegisterPage() {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
     } = useForm({
         resolver: yupResolver(schema),
     });
@@ -71,7 +71,7 @@ export default function RegisterPage() {
 
                         <Form 
                             noValidate 
-                            validated={true} 
+                            validated={isValid} 
                             onSubmit={handleSubmit(onSubmit)}
                         >
                             <Form.Group>
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                                     type="button" 
                                     onClick={() => navigate('/')}
                                 >
-                                    Entrar
+                                    Login
                                 </Button>
                             </div>
                         </Form>

@@ -29,7 +29,7 @@ export default function LoginPage() {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm({
         resolver: yupResolver(schema),
     });
@@ -66,7 +66,7 @@ export default function LoginPage() {
 
                         <Form 
                             noValidate 
-                            validated={true} 
+                            validated={isValid} 
                             onSubmit={handleSubmit(onSubmit)}
                         >
                             <Form.Group>
