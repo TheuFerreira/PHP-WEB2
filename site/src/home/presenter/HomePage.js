@@ -4,6 +4,7 @@ import EventItemComponent from '../../components/event_item/EventItemComponent';
 import { getAllEvents, enterInEvent, getEventById } from '../repositories/HomeRepository';
 import Context from '../../Context/Context';
 import Cookies from 'universal-cookie';
+import { Col, Container, Row } from "react-bootstrap";
 
 export default function HomePage() {
 
@@ -47,22 +48,54 @@ export default function HomePage() {
         setUsuario(null);
     }
 
+    const generateRows = (size, maxPerRow) => {
+        let rowsCount = size / maxPerRow;
+        let rows = [];
+
+        for (let i = 0; i < rowsCount; i ++) {
+            let colsInRow = maxPerRow;
+            if (colsInRow * (i + 1) > size) {
+                colsInRow = size % maxPerRow;
+            }
+
+            rows.push((<Row> { generateCols(i, colsInRow, maxPerRow) } </Row>));
+        }
+
+        return rows;
+    }
+
+    const generateCols = (rowIndex, colsCount, maxPerRow) => {
+        let cols = [];
+        for (let i = 0; i < colsCount; i++) {
+            let index = rowIndex * maxPerRow + i;
+            cols.push((<Col> { generateItem(index) } </Col>))
+        }
+
+        return cols;
+    }
+
+    const generateItem = (index) => {
+        return (
+            <EventItemComponent 
+                key={events[index].id_event} 
+                data={events[index]}
+                usuario={usuario}
+                onClick={(idEvent) => onEnterEvent(idEvent)}
+            /> 
+        );
+    }
+
     return (
         <div>
             <Menu onExit={onExit}/>
 
-            <div>
-                { 
-                    events.map((x) => 
-                        <EventItemComponent 
-                            key={x.id_event} 
-                            data={x}
-                            usuario={usuario}
-                            onClick={(idEvent) => onEnterEvent(idEvent)}
-                        /> 
-                    ) 
-                }
-            </div>
+            <Container>
+                <Row className='text-center mb-4'>
+                    <h3>Eventos</h3>
+                </Row>
+
+                { generateRows(events.length, 3) }
+            </Container>
         </div>
     );
 } 
