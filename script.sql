@@ -22,3 +22,13 @@ CREATE TABLE event(
 
     FOREIGN KEY (id_user) REFERENCES users (id_user)
 );
+
+CREATE TABLE event_user(
+    id_event INTEGER NOT NULL,
+    id_user INTEGER NOT NULL,
+    registered_at DATETIME NOT NULL,
+
+    PRIMARY KEY (id_event, id_user),
+    FOREIGN KEY (id_event) REFERENCES event (id_event),
+    FOREIGN KEY (id_user) REFERENCES event (id_user)
+);
