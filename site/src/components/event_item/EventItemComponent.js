@@ -1,3 +1,5 @@
+import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
+
 export default function EventItemComponent(props) {
     const data = props.data;
 
@@ -6,21 +8,26 @@ export default function EventItemComponent(props) {
     }
 
     return (
-        <div key={data.id_event}>
-            <div>Imagem de Evento</div>
+        <Card 
+            key={data.id_event} 
+            className='m-2' 
+            style={{width: '20rem'}}
+        >
+            <Card.Body>
+                <Card.Title>{data.title}</Card.Title>
+                <Card.Text>{data.description}</Card.Text>
+        
+                <Button onClick={onEnter}>Ingressar</Button>
+            </Card.Body>
 
-            <div>{data.title}</div>
-            <div>{data.description}</div>
+            <ListGroup>
+                <ListGroupItem>Local: {data.local}</ListGroupItem>
+                <ListGroupItem>Data e Hora: {data.date}</ListGroupItem>
+            </ListGroup>
 
-            <div>
-                <div>{data.date}</div>
-                <div>{data.local}</div>
-            </div>
-
-            <div>
-                <div>{data.count_peoples} pessoas</div>
-                <button onClick={onEnter}>Participar</button>
-            </div>
-        </div>
+            <Card.Footer>
+                {data.count_peoples} pessoas
+            </Card.Footer>
+        </Card>
     );
 }
