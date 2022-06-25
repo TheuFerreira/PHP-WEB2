@@ -13,7 +13,7 @@ export default function Menu(props) {
     }
 
     const onExit = () => {
-        navigate('/');
+        props.onExit();
     }
 
     return (
