@@ -73,6 +73,26 @@ $app->get('/web2/api/event/all', function ($request, $response, $args) {
     }
 });
 
+$app->post('/web2/api/event/enter', function ($request, $response, $args) {
+    //try {
+        $body = $request->getBody();
+        $json = json_decode($body);
+    
+        $idEvent = $json->id_event;
+        $idUser = $json->id_user;
+    
+        $controller = new EventController();
+        $result = $controller->enter($idEvent, $idUser);
+    
+        $response->getBody()->write($result);
+        return $response;
+    /*} catch (Exception) {
+        $newResponse = $response->withStatus(500);
+        return $newResponse;
+    }*/
+    
+});
+
 $app->run();
 
 ?>

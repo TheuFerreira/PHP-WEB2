@@ -30,5 +30,5 @@ CREATE TABLE event_user(
 
     PRIMARY KEY (id_event, id_user),
     FOREIGN KEY (id_event) REFERENCES event (id_event),
-    FOREIGN KEY (id_user) REFERENCES event (id_user)
+    FOREIGN KEY (id_user) REFERENCES users (id_user)
 );
