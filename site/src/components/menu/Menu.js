@@ -23,7 +23,7 @@ export default function Menu(props) {
             </div>
 
             <div>
-                <Link to={'/Inicio'}>Logo</Link>
+                <Link to={'/'}>Logo</Link>
             </div>
 
             <div>

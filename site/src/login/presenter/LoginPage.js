@@ -2,9 +2,11 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { signIn } from '../repositories/LoginRepository';
+import Context from '../../Context/Context';
+import Cookies from 'universal-cookie';
 
 const schema = yup
     .object()
@@ -24,6 +26,8 @@ const schema = yup
 
 export default function LoginPage() {
 
+    // eslint-disable-next-line no-unused-vars
+    const [_, setUsuario] = useContext(Context);
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const {
@@ -42,8 +46,10 @@ export default function LoginPage() {
         }
 
         setError('');
-        console.log(result.data);
-        navigate('/Inicio');
+
+        const cookies = new Cookies();
+        cookies.set('user', result.data);
+        setUsuario(result.data);
     }
 
     return (
