@@ -1,11 +1,14 @@
+import { useContext } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import Logo from '../../assets/images/eventos.png';
+import Cookies from 'universal-cookie';
+import Context from '../../Context/Context';
 
 export default function Menu(props) {
     
     const navigate = useNavigate();
-    const data = props.data;
+    const [usuario, setUsuario] = useContext(Context);
     
     const onAccount = () => {
         navigate('/Conta/1');
@@ -16,13 +19,15 @@ export default function Menu(props) {
     }
 
     const onExit = () => {
-        props.onExit();
+        const cookie = new Cookies();
+        cookie.remove('user');
+        setUsuario(null);
     }
 
     return (
         <Navbar className='shadow-sm' sticky="top">
             <Container fluid>
-                <Navbar.Brand href="#" onClick={onAccount}>{data.fullname}</Navbar.Brand>
+                <Navbar.Brand href="#" onClick={onAccount}>{usuario.fullname}</Navbar.Brand>
 
                 <Navbar.Collapse className='justify-content-center'>
                     <Link to={'/'}>

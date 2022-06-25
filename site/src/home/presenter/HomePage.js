@@ -3,13 +3,13 @@ import Menu from "../../components/menu/Menu";
 import EventItemComponent from '../../components/event_item/EventItemComponent';
 import { getAllEvents, enterInEvent, getEventById } from '../repositories/HomeRepository';
 import Context from '../../Context/Context';
-import Cookies from 'universal-cookie';
+
 import { Col, Container, Row } from "react-bootstrap";
 
 export default function HomePage() {
 
     const [events, setEvents] = useState([]);
-    const [usuario, setUsuario] = useContext(Context);
+    const [usuario] = useContext(Context);
     const idUser = parseInt(usuario.id_user);
 
     useEffect(() => {
@@ -40,12 +40,6 @@ export default function HomePage() {
         tempEvents[index] = result.data;
 
         setEvents(tempEvents);
-    }
-
-    const onExit = () => {
-        const cookie = new Cookies();
-        cookie.remove('user');
-        setUsuario(null);
     }
 
     const generateRows = (size, maxPerRow) => {
@@ -89,7 +83,6 @@ export default function HomePage() {
         <div>
             <Menu 
                 data={usuario} 
-                onExit={onExit}
             />
 
             <Container className='mt-4'>
