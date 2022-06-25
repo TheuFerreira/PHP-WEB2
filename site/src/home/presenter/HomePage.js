@@ -58,7 +58,7 @@ export default function HomePage() {
                 colsInRow = size % maxPerRow;
             }
 
-            rows.push((<Row> { generateCols(i, colsInRow, maxPerRow) } </Row>));
+            rows.push((<Row key={i}> { generateCols(i, colsInRow, maxPerRow) } </Row>));
         }
 
         return rows;
@@ -68,7 +68,7 @@ export default function HomePage() {
         let cols = [];
         for (let i = 0; i < colsCount; i++) {
             let index = rowIndex * maxPerRow + i;
-            cols.push((<Col> { generateItem(index) } </Col>))
+            cols.push((<Col key={index}> { generateItem(index) } </Col>))
         }
 
         return cols;
