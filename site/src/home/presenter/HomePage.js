@@ -87,9 +87,12 @@ export default function HomePage() {
 
     return (
         <div>
-            <Menu onExit={onExit}/>
+            <Menu 
+                data={usuario} 
+                onExit={onExit}
+            />
 
-            <Container>
+            <Container className='mt-4'>
                 <Row className='text-center mb-4'>
                     <h3>Eventos</h3>
                 </Row>

@@ -9,8 +9,10 @@ export default function EventItemComponent(props) {
     }
 
     const showActionEnter = () => {
-        if (usuario.id_user === data.id_user) {
-            return <div></div>;
+        if (parseInt(usuario.id_user) === data.id_user) {
+            return <div>
+                <span className="text-muted">Você criou</span>
+            </div>;
         }
 
         if (data.is_in_event) {
@@ -43,7 +45,7 @@ export default function EventItemComponent(props) {
             </ListGroup>
 
             <Card.Footer>
-                {data.count_peoples} pessoas
+                {data.count_peoples} pessoa(s)
             </Card.Footer>
         </Card>
     );

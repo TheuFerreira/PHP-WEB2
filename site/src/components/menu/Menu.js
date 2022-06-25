@@ -1,8 +1,10 @@
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Menu(props) {
     
     const navigate = useNavigate();
+    const data = props.data;
     
     const onAccount = () => {
         navigate('/Conta/1');
@@ -17,19 +19,19 @@ export default function Menu(props) {
     }
 
     return (
-        <nav>
-            <div>
-                <button onClick={onAccount}>Conta</button>
-            </div>
+        <Navbar className='shadow-sm' sticky="top">
+            <Container fluid>
+                <Navbar.Brand href="#" onClick={onAccount}>{data.fullname}</Navbar.Brand>
 
-            <div>
-                <Link to={'/'}>Logo</Link>
-            </div>
+                <Navbar.Collapse className='justify-content-center'>
+                    <Link to={'/'}>Logo</Link>
+                </Navbar.Collapse>
 
-            <div>
-                <button onClick={onNewEvent}>Criar Evento</button>
-                <button onClick={onExit}>Sair</button>
-            </div>
-        </nav>
+                <Navbar.Collapse className='justify-content-end'>
+                    <Nav.Link href='#' onClick={onNewEvent}>Criar Evento</Nav.Link>
+                    <Nav.Link href='#' onClick={onExit}>Sair</Nav.Link>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
 }
