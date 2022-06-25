@@ -1,19 +1,24 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { signIn } from '../repositories/LoginRepository';
+import { createAccount } from '../repositories/RegisterRepository';
 
 const schema = yup
     .object()
     .shape({
+        fullname: yup
+            .string()
+            .required('Insira seu nome completo')
+            .min(5, 'Insira pelo menos 5 caracteres')
+            .max(100, 'O limite máximo é de 100 caractres'),
         email: yup
             .string()
             .required('Insira um email')
             .email('Insira um email válido')
-            .max(50, 'O limite máximo é de 100 caractres'),
+            .max(100, 'O limite máximo é de 100 caractres'),
         password: yup
             .string()
             .required('Insira uma senha')
@@ -22,20 +27,20 @@ const schema = yup
     })
     .required();
 
-export default function LoginPage() {
+export default function RegisterPage() {
 
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
     });
 
     const onSubmit = async (data) => {
-        const result = await signIn(data.email, data.password);
+        const result = await createAccount(data.fullname, data.email, data.password);
         if (result.message !== undefined) {
             setError(result.message);
             return;
@@ -43,7 +48,7 @@ export default function LoginPage() {
 
         setError('');
         console.log(result.data);
-        navigate('/Inicio');
+        navigate('/');
     }
 
     return (
@@ -61,7 +66,7 @@ export default function LoginPage() {
                         }}
                     >
                         <Container className='d-flex justify-content-center mb-2'>
-                            <h2>Login</h2>
+                            <h2>Cadastar</h2>
                         </Container>
 
                         <Form 
@@ -69,6 +74,19 @@ export default function LoginPage() {
                             validated={true} 
                             onSubmit={handleSubmit(onSubmit)}
                         >
+                            <Form.Group>
+                                <Form.Label>Nome Completo:</Form.Label>
+                                <Form.Control
+                                    placeholder="example" 
+                                    className={`form-control ${errors.fullname ? 'is-invalid' : ''}`}
+                                    {...register('fullname')}
+                                />
+
+                                <Form.Control.Feedback type='invalid'>
+                                    {errors.fullname?.message}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+
                             <Form.Group>
                                 <Form.Label>Email:</Form.Label>
                                 <Form.Control
@@ -105,14 +123,14 @@ export default function LoginPage() {
                                 <Button 
                                     type="submit"
                                 >
-                                    Entrar
+                                    Cadastrar
                                 </Button>
 
                                 <Button 
                                     type="button" 
-                                    onClick={() => navigate('/Registrar')}
+                                    onClick={() => navigate('/')}
                                 >
-                                    Cadastre-se
+                                    Entrar
                                 </Button>
                             </div>
                         </Form>
