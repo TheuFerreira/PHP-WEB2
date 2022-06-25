@@ -15,7 +15,7 @@ class EventRepository {
 
     public function getAll() {
         $sql = '
-        SELECT id_event, id_user, title, description, local, date 
+        SELECT id_event, id_user, title, description, local, date, 0 AS count_peoples 
         FROM event
         ORDER BY date ASC
         ';
