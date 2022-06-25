@@ -5,7 +5,8 @@ export default function EventItemComponent(props) {
     const usuario = props.usuario;
 
     const onEnter = () => {
-        props.onClick(data.id_event);
+        const idEvent = parseInt(data.id_event);
+        props.onClick(idEvent);
     }
 
     return (

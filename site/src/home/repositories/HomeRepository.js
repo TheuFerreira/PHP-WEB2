@@ -5,13 +5,13 @@ export async function getAllEvents() {
         method: 'GET',
     }).then((response) => {
         if (!response.ok) {
-            throw new Error();
+            throw new Error('Estamos com problemas');
         }
 
         return response.json();
     }).then((json) => {
         return json;
-    }).catch((error) => {
+    }).catch(() => {
         return [];
     });
 
