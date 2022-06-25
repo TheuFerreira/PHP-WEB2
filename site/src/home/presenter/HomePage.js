@@ -9,20 +9,20 @@ export default function HomePage() {
 
     const [events, setEvents] = useState([]);
     const [usuario, setUsuario] = useContext(Context);
+    const idUser = parseInt(usuario.id_user);
 
     useEffect(() => {
-        getAllEvents().then((data) => setEvents(data));
-    }, []);
+        getAllEvents(idUser).then((data) => setEvents(data));
+    }, [idUser]);
 
     const onEnterEvent = async (idEvent) => {
-        const idUser = parseInt(usuario.id_user);
         let result = await enterInEvent(idEvent, idUser);
         if (result.message !== undefined) {
             console.log(result.message);
             return;
         }
 
-        result = await getEventById(idEvent);
+        result = await getEventById(idEvent, idUser);
         if (result.message !== undefined) {
             console.log(result.message);
             return;

@@ -1,7 +1,7 @@
 import { ipAPI } from '../../utils/ips';
 
-export async function getAllEvents() {
-    const result = await fetch(`${ipAPI}/event/all`, {
+export async function getAllEvents(idUser) {
+    const result = await fetch(`${ipAPI}/event/all/${idUser}`, {
         method: 'GET',
     }).then((response) => {
         if (!response.ok) {
@@ -46,8 +46,8 @@ export async function enterInEvent(idEvent, idUser) {
     return result;
 }
 
-export async function getEventById(idEvent) {
-    const result = await fetch(`${ipAPI}/event/${idEvent}`, {
+export async function getEventById(idEvent, idUser) {
+    const result = await fetch(`${ipAPI}/event/${idUser}/${idEvent}`, {
         method: 'GET',
     }).then((res) => {
         if (res.status === 204) {

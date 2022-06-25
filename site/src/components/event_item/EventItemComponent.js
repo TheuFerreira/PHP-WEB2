@@ -5,8 +5,23 @@ export default function EventItemComponent(props) {
     const usuario = props.usuario;
 
     const onEnter = () => {
-        const idEvent = parseInt(data.id_event);
-        props.onClick(idEvent);
+        props.onClick(data.id_event);
+    }
+
+    const showActionEnter = () => {
+        if (usuario.id_user === data.id_user) {
+            return <div></div>;
+        }
+
+        if (data.is_in_event) {
+            return (
+                <span>Ingressado</span>
+            );
+        }
+
+        return (
+            <Button onClick={onEnter}>Ingressar</Button>
+        );
     }
 
     return (
@@ -19,7 +34,7 @@ export default function EventItemComponent(props) {
                 <Card.Title>{data.title}</Card.Title>
                 <Card.Text>{data.description}</Card.Text>
         
-                { usuario.id_user !== data.id_user && <Button onClick={onEnter}>Ingressar</Button> }
+                { showActionEnter() }
             </Card.Body>
 
             <ListGroup>
