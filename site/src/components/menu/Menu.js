@@ -1,5 +1,6 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
+import Logo from '../../assets/images/eventos.png';
 
 export default function Menu(props) {
     
@@ -24,7 +25,13 @@ export default function Menu(props) {
                 <Navbar.Brand href="#" onClick={onAccount}>{data.fullname}</Navbar.Brand>
 
                 <Navbar.Collapse className='justify-content-center'>
-                    <Link to={'/'}>Logo</Link>
+                    <Link to={'/'}>
+                        <img 
+                            src={Logo} 
+                            alt="logo" 
+                            style={{height: 40}}
+                        />
+                    </Link>
                 </Navbar.Collapse>
 
                 <Navbar.Collapse className='justify-content-end'>

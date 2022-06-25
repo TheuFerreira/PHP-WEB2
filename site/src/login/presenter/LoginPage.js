@@ -7,6 +7,7 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { signIn } from '../repositories/LoginRepository';
 import Context from '../../Context/Context';
 import Cookies from 'universal-cookie';
+import Logo from '../../assets/images/eventos.png';
 
 const schema = yup
     .object()
@@ -66,6 +67,11 @@ export default function LoginPage() {
                             boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.5)'
                         }}
                     >
+                        <img 
+                            src={Logo} 
+                            alt='logo' 
+                            style={{height: 50}}/>
+
                         <Container className='d-flex justify-content-center mb-2'>
                             <h2>Login</h2>
                         </Container>
