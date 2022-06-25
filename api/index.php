@@ -7,6 +7,7 @@ header('Access-Control-Allow-Headers: *');
 header("Access-Control-Allow-Methods: GET, POST, DELETE");
 
 use Controllers\LoginController;
+use Errors\ExistsException;
 use Errors\NotFoundException;
 use Slim\Factory\AppFactory;
 
@@ -27,8 +28,31 @@ $app->get('/web2/api/login/signin/{email}/{password}', function($request, $respo
     } catch (NotFoundException) {
         $newResponse = $response->withStatus(204);
         return $newResponse;
-    } catch (Exception){
+    } catch (Exception) {
+        $newResponse = $response->withStatus(500);
+        return $newResponse;
+    }
+});
+
+$app->post('/web2/api/login/register', function ($request, $response, $args) {
+    try {
+        $body = $request->getBody();
+        $json = json_decode($body);
+    
+        $fullname = $json->fullname;
+        $email = $json->email;
+        $password = $json->password;
+    
+        $controller = new LoginController();
+        $result = $controller->register($fullname, $email, $password);
+    
+        $response->getBody()->write($result);
+        return $response;
+    } catch (ExistsException) {
         $newResponse = $response->withStatus(400);
+        return $newResponse;
+    } catch (Exception) {
+        $newResponse = $response->withStatus(500);
         return $newResponse;
     }
 });
