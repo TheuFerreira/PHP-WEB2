@@ -17,3 +17,55 @@ export async function getAllEvents() {
 
     return result;
 }
+
+export async function enterInEvent(idEvent, idUser) {
+    const data = {
+        "id_event": idEvent,
+        "id_user": idUser
+    };
+
+    const result = await fetch(`${ipAPI}/event/enter`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error('Estamos com problemas');
+        }
+
+        return response.json();
+    }).then((json) => {
+        return {
+            data: json
+        };
+    }).catch((error) => {
+        return {
+            message: error.message
+        };
+    });
+
+    return result;
+}
+
+export async function getEventById(idEvent) {
+    const result = await fetch(`${ipAPI}/event/${idEvent}`, {
+        method: 'GET',
+    }).then((res) => {
+        if (res.status === 204) {
+            throw new Error('Evento não encontrado');
+        } else if (!res.ok) {
+            throw new Error('Estamos com problemas');
+        }
+
+        return res.json();
+    }).then((json) => {
+        return {
+            data: json
+        };
+    }).catch((error) => {
+        return {
+            message: error.message
+        };
+    });
+
+    return result;
+}

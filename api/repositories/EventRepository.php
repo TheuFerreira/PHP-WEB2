@@ -30,6 +30,29 @@ class EventRepository {
         
         return $rows;
     }
+
+    public function getById($idEvent) {
+        $sql = '
+        SELECT e.id_event, e.id_user, e.title, e.description, e.local, e.date, COUNT(eu.id_user) AS count_peoples 
+        FROM event AS e
+        LEFT JOIN event_user AS eu ON eu.id_event = e.id_event
+        WHERE e.id_event = ?
+        LIMIT 1
+        ';
+
+        $conn = $this->connection->getConnection();
+        $query = $conn->prepare($sql);
+
+        $query->bindValue(1, $idEvent);
+        $query->execute();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        if ($row['id_event'] == null) {
+            return null;
+        }
+
+        return $row;
+    }
 }
 
 ?>
