@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import Menu from "../../components/menu/Menu";
 import EventItemComponent from '../../components/event_item/EventItemComponent';
-import { getAllEvents } from '../repositories/HomeRepository';
+import { getAllEvents, enterInEvent, getEventById } from '../repositories/HomeRepository';
 import Context from '../../Context/Context';
 import Cookies from 'universal-cookie';
-import { ipAPI } from "../../utils/ips";
 
 export default function HomePage() {
 
@@ -15,29 +14,31 @@ export default function HomePage() {
         getAllEvents().then((data) => setEvents(data));
     }, []);
 
-    const onEnterEvent = (idEvent) => {
+    const onEnterEvent = async (idEvent) => {
         const idUser = parseInt(usuario.id_user);
-        const data = {
-            "id_event": idEvent,
-            "id_user": idUser
-        };
+        let result = await enterInEvent(idEvent, idUser);
+        if (result.message !== undefined) {
+            console.log(result.message);
+            return;
+        }
 
-        console.log(data);
+        result = await getEventById(idEvent);
+        if (result.message !== undefined) {
+            console.log(result.message);
+            return;
+        }
 
-        fetch(`${ipAPI}/event/enter`, {
-            method: 'POST',
-            body: JSON.stringify(data),
-        }).then((response) => {
-            if (!response.ok) {
-                throw new Error('Estamos com problemas');
+        let index = -1;
+        for (let i = 0; i < events.length; i++) {
+            if (events[i].id_event === result.data.id_event) {
+                index = i;
             }
+        }
 
-            return response.json();
-        }).then((json) => {
-            console.log(json);
-        }).catch((error) => {
-            console.log(error);
-        });
+        let tempEvents = [...events];
+        tempEvents[index] = result.data;
+
+        setEvents(tempEvents);
     }
 
     const onExit = () => {
