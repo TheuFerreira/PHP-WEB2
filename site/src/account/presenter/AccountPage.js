@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Menu from "../../components/menu/Menu";
 import EventItemComponent from '../../components/event_item/EventItemComponent';
 import Context from "../../Context/Context";
 import { Masonry } from 'masonic';
+import { ipAPI } from '../../utils/ips';
 
 const _events = [
     {
@@ -43,11 +44,29 @@ const _events = [
     }
 ];
 
-export default function Account() {
+export default function AccountPage() {
 
     const [usuario] = useContext(Context);
-    const [userEvents] = useState(_events);
+    const [userEvents, setUserEvents] = useState([]);
     const [participatedEvents] = useState(_events);
+
+    const idUser = usuario.id_user;
+
+    useEffect(() => {
+        fetch(`${ipAPI}/user/AllEvents/${idUser}`, {
+            method: 'GET'
+        }).then((response) => {
+            if (!response.ok) {
+                throw new Error('Estamos com problemas');
+            }
+
+            return response.json();
+        }).then((json) => {
+            setUserEvents(json);
+        }).catch((error) => {
+            console.log(error.message)
+        });
+    }, [idUser]);
 
     const MasonryCard = ({ index, data, width }) => {
         return <EventItemComponent 

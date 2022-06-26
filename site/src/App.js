@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Account from "./account/presenter/Account";
+import AccountPage from "./account/presenter/AccountPage";
 import LoginPage from "./login/presenter/LoginPage";
 import RegisterPage from "./register/presenter/RegisterPage";
 import HomePage from "./home/presenter/HomePage";
@@ -42,7 +42,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage/>}/>
-            <Route path="/Conta" element={<Account/>}/>
+            <Route path="/Conta" element={<AccountPage/>}/>
             <Route path="/CriarEvento" element={<CreateEventPage/>}/>
           </Routes>
         </BrowserRouter>

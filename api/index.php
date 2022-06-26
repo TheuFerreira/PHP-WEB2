@@ -8,6 +8,7 @@ header("Access-Control-Allow-Methods: GET, POST, DELETE");
 
 use Controllers\EventController;
 use Controllers\LoginController;
+use Controllers\UserController;
 use Errors\ExistsException;
 use Errors\NotFoundException;
 use Slim\Factory\AppFactory;
@@ -126,6 +127,22 @@ $app->post('/web2/api/event', function ($request, $response, $args) {
 
         $controller = new EventController();
         $result = $controller->create($idUser, $title, $description, $local, $date);
+
+        $response->getBody()->write($result);
+        return $response;
+    } catch (Exception) {
+        $newResponse = $response->withStatus(500);
+        return $newResponse;
+    }
+});
+
+// User
+$app->get('/web2/api/user/AllEvents/{id_user}', function($request, $response, $args) {
+    try {
+        $idUser = $args['id_user'];
+
+        $controller = new UserController();
+        $result = $controller->getAllEventsOfUser($idUser);
 
         $response->getBody()->write($result);
         return $response;
