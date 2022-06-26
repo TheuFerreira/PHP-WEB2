@@ -81,9 +81,7 @@ export default function HomePage() {
 
     return (
         <div>
-            <Menu 
-                data={usuario} 
-            />
+            <Menu/>
 
             <Container className='mt-4'>
                 <Row className='text-center mb-4'>
