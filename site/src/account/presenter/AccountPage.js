@@ -3,8 +3,8 @@ import Menu from "../../components/menu/Menu";
 import EventItemComponent from '../../components/event_item/EventItemComponent';
 import Context from "../../Context/Context";
 import { Masonry } from 'masonic';
-import { ipAPI } from '../../utils/ips';
 import { Container } from "react-bootstrap";
+import { getAllEnteredEventsByUser, getAllEventsByUser } from '../repositories/AccountRepository';
 
 export default function AccountPage() {
 
@@ -15,34 +15,30 @@ export default function AccountPage() {
     const idUser = usuario.id_user;
 
     useEffect(() => {
-        fetch(`${ipAPI}/user/AllEvents/${idUser}`, {
-            method: 'GET'
-        }).then((response) => {
-            if (!response.ok) {
-                throw new Error('Estamos com problemas');
-            }
+        loadAllEventsOfUser();
+        loadAllEnteredEventsOfUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-            return response.json();
-        }).then((json) => {
-            setUserEvents(json);
-        }).catch((error) => {
-            console.log(error.message)
-        });
+    const loadAllEventsOfUser = async () => {
+        const response = await getAllEventsByUser(idUser);
+        if (response.message !== undefined) {
+            setUserEvents([]);
+            return;
+        }
 
-        fetch(`${ipAPI}/user/EnteredEvents/${idUser}`, {
-            method: 'GET'
-        }).then((response) => {
-            if (!response.ok) {
-                throw new Error('Estamos com problemas');
-            }
+        setUserEvents(response.data);
+    }
 
-            return response.json();
-        }).then((json) => {
-            setParticipatedEvents(json);
-        }).catch((error) => {
-            console.log(error);
-        });
-    }, [idUser]);
+    const loadAllEnteredEventsOfUser = async () => {
+        const response = await getAllEnteredEventsByUser(idUser);
+        if (response.message !== undefined) {
+            setUserEvents([]);
+            return;
+        }
+
+        setParticipatedEvents(response.data);
+    }
 
     const MasonryCard = ({ index, data, width }) => {
         return <EventItemComponent 
