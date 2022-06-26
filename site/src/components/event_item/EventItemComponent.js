@@ -27,9 +27,10 @@ export default function EventItemComponent(props) {
     }
 
     return (
-        <Container className="m-2" style={{width: props.width}}>
+        <Container style={{width: props.width}}>
             <Card 
                 key={data.id_event} 
+                className="mb-4"
             >
                 <Card.Body>
                     <Card.Title>{data.title}</Card.Title>
