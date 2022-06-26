@@ -3,8 +3,8 @@ import Menu from "../../components/menu/Menu";
 import EventItemComponent from '../../components/event_item/EventItemComponent';
 import { getAllEvents, enterInEvent, getEventById } from '../repositories/HomeRepository';
 import Context from '../../Context/Context';
-
-import { Col, Container, Row } from "react-bootstrap";
+import { Masonry } from 'masonic';
+import { Container, Row } from "react-bootstrap";
 
 export default function HomePage() {
 
@@ -15,6 +15,16 @@ export default function HomePage() {
     useEffect(() => {
         getAllEvents(idUser).then((data) => setEvents(data));
     }, [idUser]);
+
+    const MasonryCard = ({ index, data, width }) => {
+        return <EventItemComponent 
+            key={data.id_event} 
+            width={width}
+            data={data}
+            usuario={usuario}
+            onClick={(idEvent) => onEnterEvent(idEvent)}
+        /> 
+    }
 
     const onEnterEvent = async (idEvent) => {
         let result = await enterInEvent(idEvent, idUser);
@@ -42,43 +52,6 @@ export default function HomePage() {
         setEvents(tempEvents);
     }
 
-    const generateRows = (size, maxPerRow) => {
-        let rowsCount = size / maxPerRow;
-        let rows = [];
-
-        for (let i = 0; i < rowsCount; i ++) {
-            let colsInRow = maxPerRow;
-            if (colsInRow * (i + 1) > size) {
-                colsInRow = size % maxPerRow;
-            }
-
-            rows.push((<Row key={i}> { generateCols(i, colsInRow, maxPerRow) } </Row>));
-        }
-
-        return rows;
-    }
-
-    const generateCols = (rowIndex, colsCount, maxPerRow) => {
-        let cols = [];
-        for (let i = 0; i < colsCount; i++) {
-            let index = rowIndex * maxPerRow + i;
-            cols.push((<Col key={index}> { generateItem(index) } </Col>))
-        }
-
-        return cols;
-    }
-
-    const generateItem = (index) => {
-        return (
-            <EventItemComponent 
-                key={events[index].id_event} 
-                data={events[index]}
-                usuario={usuario}
-                onClick={(idEvent) => onEnterEvent(idEvent)}
-            /> 
-        );
-    }
-
     return (
         <div>
             <Menu/>
@@ -88,7 +61,7 @@ export default function HomePage() {
                     <h3>Eventos</h3>
                 </Row>
 
-                { generateRows(events.length, 3) }
+                <Masonry items={events} columnWidth={300} render={MasonryCard}/>
             </Container>
         </div>
     );
