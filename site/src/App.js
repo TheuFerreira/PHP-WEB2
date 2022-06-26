@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
 import Context from "./Context/Context";
 import Cookies from 'universal-cookie';
+import './css/Main.min.css';
 
 function App() {
   const [usuario, setUsuario] = useState(null);

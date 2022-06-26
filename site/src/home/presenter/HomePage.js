@@ -5,15 +5,22 @@ import { getAllEvents, enterInEvent, getEventById } from '../repositories/HomeRe
 import Context from '../../Context/Context';
 import { Masonry } from 'masonic';
 import { Container, Row } from "react-bootstrap";
+import Loading from "../../components/loading/Loading";
 
 export default function HomePage() {
 
-    const [events, setEvents] = useState([]);
     const [usuario] = useContext(Context);
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
     const idUser = parseInt(usuario.id_user);
 
     useEffect(() => {
-        getAllEvents(idUser).then((data) => setEvents(data));
+        setLoading(true);
+        getAllEvents(idUser).then((data) => {
+            setEvents(data);
+
+            setLoading(false);
+        });
     }, [idUser]);
 
     const MasonryCard = ({ index, data, width }) => {
@@ -58,10 +65,15 @@ export default function HomePage() {
 
             <Container className='mt-4'>
                 <Row className='text-center mb-4'>
-                    <h3>Eventos</h3>
+                    <h2>Eventos</h2>
                 </Row>
 
-                <Masonry items={events} columnWidth={300} render={MasonryCard}/>
+                { 
+                    loading 
+                    ? <Loading/>
+                    : <Masonry items={events} columnWidth={300} render={MasonryCard}/>
+                }
+                
             </Container>
         </div>
     );
