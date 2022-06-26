@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { createAccount } from '../repositories/RegisterRepository';
+import LoadingButton from '../../components/loading_button/LoadingButton';
 
 const schema = yup
     .object()
@@ -31,6 +32,7 @@ export default function RegisterPage() {
 
     const navigate = useNavigate();
     const [error, setError] = useState('');
+    const [isLoadingButton, setLoadingButton] = useState(false);
     const {
         register,
         handleSubmit,
@@ -40,7 +42,10 @@ export default function RegisterPage() {
     });
 
     const onSubmit = async (data) => {
+        setLoadingButton(true);
         const result = await createAccount(data.fullname, data.email, data.password);
+        setLoadingButton(false);
+
         if (result.message !== undefined) {
             setError(result.message);
             return;
@@ -120,11 +125,10 @@ export default function RegisterPage() {
                             </Row>
 
                             <div className='d-flex justify-content-between'>
-                                <Button 
-                                    type="submit"
-                                >
-                                    Cadastrar
-                                </Button>
+                                <LoadingButton 
+                                    loading={isLoadingButton} 
+                                    type='submit'
+                                >Cadastrar</LoadingButton>
 
                                 <Button 
                                     type="button" 

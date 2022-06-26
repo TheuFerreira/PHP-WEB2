@@ -8,6 +8,7 @@ import { signIn } from '../repositories/LoginRepository';
 import Context from '../../Context/Context';
 import Cookies from 'universal-cookie';
 import Logo from '../../assets/images/eventos.png';
+import LoadingButton from '../../components/loading_button/LoadingButton';
 
 const schema = yup
     .object()
@@ -31,6 +32,7 @@ export default function LoginPage() {
     const [_, setUsuario] = useContext(Context);
     const navigate = useNavigate();
     const [error, setError] = useState('');
+    const [isLoadingButton, setLoadingButton] = useState(false);
     const {
         register,
         handleSubmit,
@@ -40,7 +42,10 @@ export default function LoginPage() {
     });
 
     const onSubmit = async (data) => {
+        setLoadingButton(true);
         const result = await signIn(data.email, data.password);
+        setLoadingButton(false);
+
         if (result.message !== undefined) {
             setError(result.message);
             return;
@@ -114,11 +119,12 @@ export default function LoginPage() {
                             </Row>
 
                             <div className='d-flex justify-content-between'>
-                                <Button 
+                                <LoadingButton 
                                     type="submit"
+                                    loading={isLoadingButton}
                                 >
                                     Entrar
-                                </Button>
+                                </LoadingButton>
 
                                 <Button 
                                     type="button" 

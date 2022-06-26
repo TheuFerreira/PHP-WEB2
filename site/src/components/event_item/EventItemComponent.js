@@ -1,11 +1,17 @@
-import { Card, Button, ListGroup, ListGroupItem, Container } from "react-bootstrap";
+import { useState } from "react";
+import { Card, ListGroup, ListGroupItem, Container } from "react-bootstrap";
+import LoadingButton from '../loading_button/LoadingButton';
 
 export default function EventItemComponent(props) {
     const data = props.data;
     const usuario = props.usuario;
 
-    const onEnter = () => {
-        props.onClick(data.id_event);
+    const [loading, setLoading] = useState(false);
+
+    const onEnter = async () => {
+        setLoading(true);
+        await props.onClick(data.id_event);
+        setLoading(false);
     }
 
     const showActionEnter = () => {
@@ -22,7 +28,10 @@ export default function EventItemComponent(props) {
         }
 
         return (
-            <Button onClick={onEnter}>Ingressar</Button>
+            <LoadingButton 
+                loading={loading} 
+                onClick={onEnter}
+            >Ingressar</LoadingButton>
         );
     }
 

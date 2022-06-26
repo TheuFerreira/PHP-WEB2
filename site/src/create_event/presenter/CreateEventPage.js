@@ -2,10 +2,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Menu from '../../components/menu/Menu';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Context from '../../Context/Context';
 import { create } from '../repositories/CreateEventRepository';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import LoadingButton from '../../components/loading_button/LoadingButton';
 
 const schema = yup
     .object()
@@ -20,6 +21,7 @@ const schema = yup
 export default function CreateEventPage(props) {
 
     const [usuario] = useContext(Context);
+    const [isLoadingButton, setLoadingButton] = useState(false);
     const {
         register,
         handleSubmit,
@@ -30,7 +32,10 @@ export default function CreateEventPage(props) {
     });
 
     const onSubmit = async (data) => {
+        setLoadingButton(true);
         const response = await create(parseInt(usuario.id_user), data.title, data.description, data.date.toISOString().slice(0, -5), data.local);
+        setLoadingButton(false);
+        
         if (response.message) {
             console.log(response.message);
             return;
@@ -117,11 +122,12 @@ export default function CreateEventPage(props) {
                                 </Form.Group>
 
                                 <div className='d-flex justify-content-center mt-4'>
-                                    <Button 
+                                    <LoadingButton 
                                         type="submit"
+                                        loading={isLoadingButton}
                                     >
                                         Criar Evento
-                                    </Button>
+                                    </LoadingButton>
                                 </div>
                             </Form>
                         </Container>
