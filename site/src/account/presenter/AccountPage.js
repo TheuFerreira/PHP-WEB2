@@ -54,20 +54,26 @@ export default function AccountPage() {
             <Menu/>
 
             <div>
-                <h3>Suas Informações</h3>
+                <Container className='d-flex justify-content-center mb-2 mt-4'>
+                    <h3>Suas Informações</h3>
+                </Container>
 
                 <span>Nome Completo</span>
                 <span>Email</span>
             </div>
 
             <Container fluid>
-                <h3>Seus Eventos</h3>
+                <Container className='d-flex justify-content-center mb-2 mt-2'>
+                    <h3>Seus Eventos</h3>
+                </Container>
 
                 <Masonry items={userEvents} columnWidth={300} render={MasonryCard}/>
             </Container>
 
             <Container fluid>
-                <h3>Eventos que participou</h3>
+                <Container className='d-flex justify-content-center mb-2 mt-2'>
+                    <h3>Eventos que participou</h3>
+                </Container>
 
                 <Masonry items={participatedEvents} columnWidth={300} render={MasonryCard}/>
             </Container>
