@@ -41,7 +41,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage/>}/>
-            <Route path="/Conta/:id" element={<Account/>}/>
+            <Route path="/Conta" element={<Account/>}/>
             <Route path="/CriarEvento" element={<CreateEventPage/>}/>
           </Routes>
         </BrowserRouter>

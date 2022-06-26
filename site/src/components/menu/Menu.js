@@ -10,10 +10,6 @@ export default function Menu(props) {
     const navigate = useNavigate();
     const [usuario, setUsuario] = useContext(Context);
     
-    const onAccount = () => {
-        navigate('/Conta/1');
-    }
-
     const onNewEvent = () => {
         navigate('/CriarEvento');
     }
@@ -27,7 +23,7 @@ export default function Menu(props) {
     return (
         <Navbar className='shadow-sm bg-light' sticky="top">
             <Container fluid>
-                <Navbar.Brand href="#" onClick={onAccount}>{usuario.fullname}</Navbar.Brand>
+                <Navbar.Brand href="/Conta">{usuario.fullname}</Navbar.Brand>
 
                 <Navbar.Collapse className='justify-content-center'>
                     <Link to={'/'}>
