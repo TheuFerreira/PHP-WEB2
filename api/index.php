@@ -152,6 +152,21 @@ $app->get('/web2/api/user/AllEvents/{id_user}', function($request, $response, $a
     }
 });
 
+$app->get('/web2/api/user/EnteredEvents/{id_user}', function($request, $response, $args) {
+    try {
+        $idUser = $args['id_user'];
+
+        $controller = new UserController();
+        $result = $controller->getAllEnteredEvents($idUser);
+
+        $response->getBody()->write($result);
+        return $response;
+    } catch (Exception) {
+        $newResponse = $response->getBody()->withStatus(500);
+        return $newResponse;
+    }
+});
+
 $app->run();
 
 ?>
