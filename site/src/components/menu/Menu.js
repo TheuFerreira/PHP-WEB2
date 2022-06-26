@@ -25,7 +25,7 @@ export default function Menu(props) {
     }
 
     return (
-        <Navbar className='shadow-sm' sticky="top">
+        <Navbar className='shadow-sm bg-light' sticky="top">
             <Container fluid>
                 <Navbar.Brand href="#" onClick={onAccount}>{usuario.fullname}</Navbar.Brand>
 

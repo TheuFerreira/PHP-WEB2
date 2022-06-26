@@ -74,6 +74,14 @@ class EventController {
         return $json;
     }
 
+    public function create($idUser, $title, $description, $local, $date) {
+        $createdAt = gmdate("Y-m-d\TH:i:s");
+
+        $result = $this->eventRepository->insert($idUser, $title, $description, $local, $date, $createdAt);
+        $json = json_encode($result);
+        return $json;
+    }
+
 }
 
 ?>

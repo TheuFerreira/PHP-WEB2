@@ -2,6 +2,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Menu from '../../components/menu/Menu';
+import { useContext } from 'react';
+import Context from '../../Context/Context';
+import { create } from '../repositories/CreateEventRepository';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 const schema = yup
     .object()
@@ -15,46 +19,115 @@ const schema = yup
 
 export default function CreateEventPage(props) {
 
+    const [usuario] = useContext(Context);
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
+        reset,
     } = useForm({
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = () => {
+    const onSubmit = async (data) => {
+        const response = await create(parseInt(usuario.id_user), data.title, data.description, data.date.toISOString().slice(0, -5), data.local);
+        if (response.message) {
+            console.log(response.message);
+            return;
+        }
 
+        reset();
     }
 
     return (
         <div>
             <Menu/>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input 
-                    placeholder="Título"
-                    {...register('title')}/>
-                { errors.title && <span>{errors.title?.message}</span> }
-                
-                <input 
-                    placeholder="Descrição"
-                    {...register('description')}/>
-                { errors.description && <span>{errors.description?.message}</span> }
-                
-                <input 
-                    type={'date'}
-                    {...register('date')}/>
-                { errors.date && <span>{errors.date?.message}</span> }
-                    
-                
-                <input 
-                    placeholder="Local"
-                    {...register('local')}/>
-                { errors.local && <span>{errors.local?.message}</span> }
+            <Container fluid>
+                <Row className='vh-100'>
+                    <Col className='d-flex justify-content-center align-items-center'>
+                        <Container 
+                            fluid
+                            className='p-4'
+                            style={{
+                                maxWidth: 475,
+                                borderRadius: 16,
+                                backgroundColor: 'white',
+                                boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.5)'
+                            }}
+                        >
+                            <Container className='d-flex justify-content-center mb-2'>
+                                <h2>Criar Evento</h2>
+                            </Container>
 
-                <button>Criar Evento</button>
-            </form>
+                            <Form 
+                                noValidate 
+                                validated={isValid} 
+                                onSubmit={handleSubmit(onSubmit)}
+                            >
+                                <Form.Group>
+                                    <Form.Label>Título:</Form.Label>
+                                    <Form.Control
+                                        placeholder="example" 
+                                        className={`form-control ${errors.title ? 'is-invalid' : ''}`}
+                                        {...register('title')}
+                                    />
+
+                                    <Form.Control.Feedback type='invalid'>
+                                        {errors.title?.message}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group>
+                                    <Form.Label>Descrição:</Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        className={`form-control ${errors.description ? 'is-invalid' : ''}`}
+                                        {...register('description')}
+                                    />
+
+                                    <Form.Control.Feedback type='invalid'>
+                                        {errors.description?.message}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group>
+                                    <Form.Label>Local:</Form.Label>
+                                    <Form.Control
+                                        className={`form-control ${errors.local ? 'is-invalid' : ''}`}
+                                        {...register('local')}
+                                    />
+
+                                    <Form.Control.Feedback type='invalid'>
+                                        {errors.local?.message}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group>
+                                    <Form.Label>Data:</Form.Label>
+                                    <Form.Control
+                                        placeholder='0000-00-00T00:00'
+                                        className={`form-control ${errors.date ? 'is-invalid' : ''}`}
+                                        {...register('date')}
+                                    />
+
+                                    <Form.Control.Feedback type='invalid'>
+                                        {errors.date?.message}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <div className='d-flex justify-content-center mt-4'>
+                                    <Button 
+                                        type="submit"
+                                    >
+                                        Criar Evento
+                                    </Button>
+                                </div>
+                            </Form>
+                        </Container>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 }

@@ -53,6 +53,26 @@ class EventRepository {
 
         return $row;
     }
+
+    public function insert($idUser, $title, $description, $local, $date, $createdAt) : bool {
+        $sql = '
+        INSERT INTO event (id_user, title, description, local, date, created_at)
+        VALUES (?, ?, ?, ?, ?, ?);
+        ';
+
+        $connection = $this->connection->getConnection();
+        $query = $connection->prepare($sql);
+
+        $query->bindValue(1, $idUser);
+        $query->bindValue(2, $title);
+        $query->bindValue(3, $description);
+        $query->bindValue(4, $local);
+        $query->bindValue(5, $date);
+        $query->bindValue(6, $createdAt);
+
+        $result = $query->execute();
+        return $result;
+    }
 }
 
 ?>
