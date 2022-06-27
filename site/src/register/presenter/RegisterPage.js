@@ -59,7 +59,7 @@ export default function RegisterPage() {
 
         setError('');
         reset();
-        toast('Usuário criado');
+        toast.success('Usuário criado');
     }
 
     return (

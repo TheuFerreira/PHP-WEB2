@@ -5,7 +5,7 @@ export async function create(idUser, title, description, date, local) {
         "id_user": parseInt(idUser),
         "title": title,
         "description": description,
-        "date": date.toISOString().slice(0, -5),
+        "date": date,
         "local": local
     };
 

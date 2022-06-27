@@ -6,12 +6,16 @@ import { Masonry } from 'masonic';
 import { Container, Form } from "react-bootstrap";
 import { getAllEnteredEventsByUser, getAllEventsByUser } from '../repositories/AccountRepository';
 import { ToastContainer, toast } from 'react-toastify';
+import EventNotFound from "../../components/event_not_found/EventNotFound";
+import Loading from "../../components/loading/Loading";
 
 export default function AccountPage() {
 
     const [usuario] = useContext(Context);
     const [userEvents, setUserEvents] = useState([]);
     const [participatedEvents, setParticipatedEvents] = useState([]);
+    const [userLoading, setUserLoading ] = useState(false);
+    const [participatedLoading, setParticipatedLoading] = useState(false); 
 
     const idUser = usuario.id_user;
 
@@ -24,7 +28,10 @@ export default function AccountPage() {
     }, []);
 
     const loadAllEventsOfUser = async () => {
+        setUserLoading(true);
         const response = await getAllEventsByUser(idUser);
+        setUserLoading(false);
+
         if (response.message !== undefined) {
             toast.error(response.message);
             setUserEvents([]);
@@ -35,7 +42,10 @@ export default function AccountPage() {
     }
 
     const loadAllEnteredEventsOfUser = async () => {
+        setParticipatedLoading(true);
         const response = await getAllEnteredEventsByUser(idUser);
+        setParticipatedLoading(false);
+        
         if (response.message !== undefined) {
             toast.error(response.message);
             setUserEvents([]);
@@ -43,6 +53,14 @@ export default function AccountPage() {
         }
 
         setParticipatedEvents(response.data);
+    }
+
+    const showEvents = (items) => {
+        if (items.length === 0) {
+            return <EventNotFound/>;
+        }
+
+        return <Masonry items={items} columnWidth={300} render={MasonryCard}/>
     }
 
     const MasonryCard = ({ index, data, width }) => {
@@ -84,7 +102,11 @@ export default function AccountPage() {
                     <h3>Seus Eventos</h3>
                 </Container>
 
-                <Masonry items={userEvents} columnWidth={300} render={MasonryCard}/>
+                { 
+                    userLoading 
+                    ? <Loading/>
+                    : showEvents(userEvents)
+                }
             </Container>
 
             <Container fluid>
@@ -92,7 +114,11 @@ export default function AccountPage() {
                     <h3>Eventos que participou</h3>
                 </Container>
 
-                <Masonry items={participatedEvents} columnWidth={300} render={MasonryCard}/>
+                { 
+                    participatedLoading 
+                    ? <Loading/>
+                    : showEvents(participatedEvents)
+                }
             </Container>
         </div>
     );

@@ -7,6 +7,7 @@ import { Masonry } from 'masonic';
 import { Container, Row } from "react-bootstrap";
 import Loading from "../../components/loading/Loading";
 import { ToastContainer, toast } from 'react-toastify';
+import EventNotFound from "../../components/event_not_found/EventNotFound";
 
 export default function HomePage() {
 
@@ -62,6 +63,14 @@ export default function HomePage() {
         setEvents(tempEvents);
     }
 
+    const showEvents = () => {
+        if (events.length === 0) {
+            return <EventNotFound/>;
+        }
+
+        return <Masonry items={events} columnWidth={300} render={MasonryCard}/>;
+    }
+
     return (
         <div>
             <ToastContainer/>
@@ -76,7 +85,7 @@ export default function HomePage() {
                 { 
                     loading 
                     ? <Loading/>
-                    : <Masonry items={events} columnWidth={300} render={MasonryCard}/>
+                    : showEvents()
                 }
                 
             </Container>

@@ -14,7 +14,8 @@ const schema = yup
     .shape({
         title: yup.string().required('Insira o título'),
         description: yup.string().required('Insira uma descrição'),
-        date: yup.date().required('Insira uma data'),
+        date: yup.string().required('Insira uma data'),
+        hour: yup.string().required('Insira a hora'),
         local: yup.string().required('Insira o Local'),
     })
     .required();
@@ -37,8 +38,10 @@ export default function CreateEventPage(props) {
     }, []);
 
     const onSubmit = async (data) => {
+        const date = `${data.date}T${data.hour}`;
+        
         setLoadingButton(true);
-        const response = await create(parseInt(usuario.id_user), data.title, data.description, data.date.toISOString().slice(0, -5), data.local);
+        const response = await create(parseInt(usuario.id_user), data.title, data.description, date, data.local);
         setLoadingButton(false);
         
         if (response.message) {
@@ -116,18 +119,37 @@ export default function CreateEventPage(props) {
                                     </Form.Control.Feedback>
                                 </Form.Group>
 
-                                <Form.Group>
-                                    <Form.Label>Data:</Form.Label>
-                                    <Form.Control
-                                        placeholder='0000-00-00T00:00'
-                                        className={`form-control ${errors.date ? 'is-invalid' : ''}`}
-                                        {...register('date')}
-                                    />
+                                <div className='d-flex flex-row'>
+                                    <Form.Group>
+                                        <Form.Label>Data:</Form.Label>
+                                        <Form.Control
+                                            type='date'
+                                            className={`form-control ${errors.date ? 'is-invalid' : ''}`}
+                                            {...register('date')}
+                                        />
 
-                                    <Form.Control.Feedback type='invalid'>
-                                        {errors.date?.message}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
+                                        <Form.Control.Feedback type='invalid'>
+                                            {errors.date?.message}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+
+                                    <Form.Group 
+                                        style={{
+                                            paddingLeft: 16
+                                        }}
+                                    >
+                                        <Form.Label>Hora:</Form.Label>
+                                        <Form.Control
+                                            type='time'
+                                            className={`form-control ${errors.hour ? 'is-invalid' : ''}`}
+                                            {...register('hour')}
+                                        />
+
+                                        <Form.Control.Feedback type='invalid'>
+                                            {errors.hour?.message}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                </div>
 
                                 <div className='d-flex justify-content-center mt-4'>
                                     <LoadingButton 
