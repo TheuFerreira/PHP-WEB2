@@ -129,6 +129,10 @@ export default function LoginPage() {
                                 <Button 
                                     type="button" 
                                     onClick={() => navigate('/Registrar')}
+                                    style={{
+                                        backgroundColor: '#0b549e',
+                                        borderColor: '#0b549e'
+                                    }}
                                 >
                                     Cadastre-se
                                 </Button>

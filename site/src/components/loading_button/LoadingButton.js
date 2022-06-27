@@ -36,6 +36,10 @@ export default function LoadingButton(props) {
             type={loading ? 'button' :props.type} 
             className='position-relative'
             onClick={onClick}
+            style={{
+                backgroundColor: '#0b549e',
+                borderColor: '#0b549e'
+            }}
         >
             { showSpinner() }
             <div style={{opacity: opacity}}>{props.children}</div>

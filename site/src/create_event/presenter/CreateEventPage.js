@@ -7,6 +7,7 @@ import Context from '../../Context/Context';
 import { create } from '../repositories/CreateEventRepository';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import LoadingButton from '../../components/loading_button/LoadingButton';
+import { ToastContainer, toast } from 'react-toastify';
 
 const schema = yup
     .object()
@@ -37,15 +38,18 @@ export default function CreateEventPage(props) {
         setLoadingButton(false);
         
         if (response.message) {
-            console.log(response.message);
+            toast.error(response.message);
             return;
         }
 
+        toast.success('Evento Criado');
         reset();
     }
 
     return (
         <div>
+            <ToastContainer/>
+
             <Menu/>
 
             <Container fluid>

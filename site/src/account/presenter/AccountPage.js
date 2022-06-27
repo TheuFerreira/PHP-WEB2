@@ -5,6 +5,7 @@ import Context from "../../Context/Context";
 import { Masonry } from 'masonic';
 import { Container, Form } from "react-bootstrap";
 import { getAllEnteredEventsByUser, getAllEventsByUser } from '../repositories/AccountRepository';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AccountPage() {
 
@@ -23,6 +24,7 @@ export default function AccountPage() {
     const loadAllEventsOfUser = async () => {
         const response = await getAllEventsByUser(idUser);
         if (response.message !== undefined) {
+            toast.error(response.message);
             setUserEvents([]);
             return;
         }
@@ -33,6 +35,7 @@ export default function AccountPage() {
     const loadAllEnteredEventsOfUser = async () => {
         const response = await getAllEnteredEventsByUser(idUser);
         if (response.message !== undefined) {
+            toast.error(response.message);
             setUserEvents([]);
             return;
         }
@@ -51,6 +54,8 @@ export default function AccountPage() {
 
     return (
         <div>
+            <ToastContainer/>
+            
             <Menu/>
 
             <Container className='mt-2 mb-4'>

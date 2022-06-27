@@ -36,8 +36,20 @@ export default function Menu(props) {
                 </Navbar.Collapse>
 
                 <Navbar.Collapse className='justify-content-end'>
-                    <Nav.Link href='#' onClick={onNewEvent}>Criar Evento</Nav.Link>
-                    <Nav.Link href='#' onClick={onExit}>Sair</Nav.Link>
+                    <Nav.Link 
+                        href='#' 
+                        onClick={onNewEvent}
+                        style={{
+                            color: '#0b549e',
+                        }}
+                    >Criar Evento</Nav.Link>
+                    <Nav.Link 
+                        href='#' 
+                        onClick={onExit}
+                        style={{
+                            color: '#0b549e',
+                        }}
+                    >Sair</Nav.Link>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

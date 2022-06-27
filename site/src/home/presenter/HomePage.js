@@ -6,6 +6,7 @@ import Context from '../../Context/Context';
 import { Masonry } from 'masonic';
 import { Container, Row } from "react-bootstrap";
 import Loading from "../../components/loading/Loading";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function HomePage() {
 
@@ -36,13 +37,13 @@ export default function HomePage() {
     const onEnterEvent = async (idEvent) => {
         let result = await enterInEvent(idEvent, idUser);
         if (result.message !== undefined) {
-            console.log(result.message);
+            toast.error(result.message);
             return;
         }
 
         result = await getEventById(idEvent, idUser);
         if (result.message !== undefined) {
-            console.log(result.message);
+            toast.error(result.message);
             return;
         }
 
@@ -61,6 +62,8 @@ export default function HomePage() {
 
     return (
         <div>
+            <ToastContainer/>
+            
             <Menu/>
 
             <Container className='mt-4'>

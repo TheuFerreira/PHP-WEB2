@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { createAccount } from '../repositories/RegisterRepository';
 import LoadingButton from '../../components/loading_button/LoadingButton';
+import { ToastContainer, toast } from 'react-toastify';
 
 const schema = yup
     .object()
@@ -37,6 +38,7 @@ export default function RegisterPage() {
         register,
         handleSubmit,
         formState: { errors, isValid },
+        reset,
     } = useForm({
         resolver: yupResolver(schema),
     });
@@ -52,12 +54,14 @@ export default function RegisterPage() {
         }
 
         setError('');
-        console.log(result.data);
-        navigate('/');
+        reset();
+        toast('Usuário criado');
     }
 
     return (
         <Container fluid>
+            <ToastContainer/>
+
             <Row className='vh-100'>
                 <Col className='d-flex justify-content-center align-items-center'>
                     <Container 
@@ -133,6 +137,10 @@ export default function RegisterPage() {
                                 <Button 
                                     type="button" 
                                     onClick={() => navigate('/')}
+                                    style={{
+                                        backgroundColor: '#0b549e',
+                                        borderColor: '#0b549e'
+                                    }}
                                 >
                                     Login
                                 </Button>
