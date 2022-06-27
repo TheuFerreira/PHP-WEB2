@@ -3,7 +3,7 @@ import Menu from "../../components/menu/Menu";
 import EventItemComponent from '../../components/event_item/EventItemComponent';
 import Context from "../../Context/Context";
 import { Masonry } from 'masonic';
-import { Container } from "react-bootstrap";
+import { Container, Form } from "react-bootstrap";
 import { getAllEnteredEventsByUser, getAllEventsByUser } from '../repositories/AccountRepository';
 
 export default function AccountPage() {
@@ -53,14 +53,24 @@ export default function AccountPage() {
         <div>
             <Menu/>
 
-            <div>
-                <Container className='d-flex justify-content-center mb-2 mt-4'>
+            <Container className='mt-2 mb-4'>
+                <Container className='d-flex justify-content-center mb-2 mt-2'>
                     <h3>Suas Informações</h3>
                 </Container>
 
-                <span>Nome Completo</span>
-                <span>Email</span>
-            </div>
+                <div style={{width: 400}}>
+                    <Form.Group className='m-2'>
+                        <Form.Label>Nome Completo:</Form.Label>
+                        <Form.Control readOnly defaultValue={usuario.fullname}/>
+                    </Form.Group>
+
+                    <Form.Group className='m-2'>
+                        <Form.Label>Email:</Form.Label>
+                        <Form.Control readOnly defaultValue={usuario.email}/>
+                    </Form.Group>
+                </div>
+
+            </Container>
 
             <Container fluid>
                 <Container className='d-flex justify-content-center mb-2 mt-2'>
