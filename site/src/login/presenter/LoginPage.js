@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { signIn } from '../repositories/LoginRepository';
 import Context from '../../Context/Context';
@@ -40,6 +40,10 @@ export default function LoginPage() {
     } = useForm({
         resolver: yupResolver(schema),
     });
+
+    useEffect(() => {
+        document.title = 'Eventos - Login';
+    }, []);
 
     const onSubmit = async (data) => {
         setLoadingButton(true);

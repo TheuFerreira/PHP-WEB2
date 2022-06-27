@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { createAccount } from '../repositories/RegisterRepository';
 import LoadingButton from '../../components/loading_button/LoadingButton';
@@ -42,6 +42,10 @@ export default function RegisterPage() {
     } = useForm({
         resolver: yupResolver(schema),
     });
+
+    useEffect(() => {
+        document.title = 'Eventos - Cadastro';
+    }, []);
 
     const onSubmit = async (data) => {
         setLoadingButton(true);

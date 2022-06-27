@@ -16,6 +16,8 @@ export default function HomePage() {
     const idUser = parseInt(usuario.id_user);
 
     useEffect(() => {
+        document.title = 'Eventos';
+
         setLoading(true);
         getAllEvents(idUser).then((data) => {
             setEvents(data);

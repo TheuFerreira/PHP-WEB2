@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Menu from '../../components/menu/Menu';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Context from '../../Context/Context';
 import { create } from '../repositories/CreateEventRepository';
 import { Col, Container, Form, Row } from 'react-bootstrap';
@@ -31,6 +31,10 @@ export default function CreateEventPage(props) {
     } = useForm({
         resolver: yupResolver(schema),
     });
+
+    useEffect(() => {
+        document.title = 'Eventos - Novo Evento';
+    }, []);
 
     const onSubmit = async (data) => {
         setLoadingButton(true);

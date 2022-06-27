@@ -16,6 +16,8 @@ export default function AccountPage() {
     const idUser = usuario.id_user;
 
     useEffect(() => {
+        document.title = 'Eventos - Minha Conta';
+
         loadAllEventsOfUser();
         loadAllEnteredEventsOfUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
