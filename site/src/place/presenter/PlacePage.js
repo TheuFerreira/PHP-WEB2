@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
 import { Masonry } from 'masonic';
-import { ipAPI } from '../../utils/ips';
 import { toast, ToastContainer } from 'react-toastify';
+import { add, getAll } from '../repositories/PlaceRepository';
 
 const schema = yup
     .object()
@@ -45,51 +45,34 @@ export default function PlacePage(props) {
         loadAllPlaces();
     }, []);
 
-    const onSubmit = (data) => {
-        const body = {
-            "description": data.place,
-        };
-
+    const onSubmit = async (data) => {
         setLoadingButton(true);
+        const result = await add(data.place);
+        setLoadingButton(false);
 
-        fetch(`${ipAPI}/place`, {
-            method: 'POST',
-            body: JSON.stringify(body)
-        }).then((response) => {
-            if (!response.ok) {
-                throw new Error('Estamos com problemas');
-            }
+        if (result.message !== undefined) {
+            toast.error(result.message);
+            return;
+        }
 
-            return response.json();
-        }).then((json) => {
-            setLoadingButton(false);
-            reset();
-            toast.success('Adicionado com sucesso');
-            loadAllPlaces();
-        }).catch((error) => {
-            setLoadingButton(false);
-            console.log(error);
-        });
+        reset();
+        toast.success('Adicionado com sucesso');
+        loadAllPlaces();
     }
 
-    const loadAllPlaces = () => {
+    const loadAllPlaces = async () => {
         setLoading(true);
-        fetch(`${ipAPI}/place/all`, {
-            method: 'GET',
-        }).then((response) => {
-            if (!response.ok) {
-                throw new Error('Estamos com problemas');
-            }
-
-            return response.json();
-        }).then((json) => {
-            setPlaces(json);
-            setLoading(false);
-        }).catch((error) => {
+        const result = await getAll();
+        setLoading(false);
+       
+        if (result.message !== undefined) {
             setPlaces([]);
-            setLoading(false);
-            console.log(error);
-        });
+            toast.error(result.message);
+            return;
+        }
+
+        setPlaces(result.data);
+        setLoading(false);
     }
 
     const showPlaces = () => {
