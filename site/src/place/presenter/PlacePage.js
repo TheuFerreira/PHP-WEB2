@@ -41,9 +41,8 @@ export default function PlacePage(props) {
     });
 
     useEffect(() => {
-        setLoading(true);
-        setPlaces([]);
-        setLoading(false);
+        document.title = 'Eventos - Locais';
+        loadAllPlaces();
     }, []);
 
     const onSubmit = (data) => {
@@ -66,8 +65,29 @@ export default function PlacePage(props) {
             setLoadingButton(false);
             reset();
             toast.success('Adicionado com sucesso');
+            loadAllPlaces();
         }).catch((error) => {
             setLoadingButton(false);
+            console.log(error);
+        });
+    }
+
+    const loadAllPlaces = () => {
+        setLoading(true);
+        fetch(`${ipAPI}/place/all`, {
+            method: 'GET',
+        }).then((response) => {
+            if (!response.ok) {
+                throw new Error('Estamos com problemas');
+            }
+
+            return response.json();
+        }).then((json) => {
+            setPlaces(json);
+            setLoading(false);
+        }).catch((error) => {
+            setPlaces([]);
+            setLoading(false);
             console.log(error);
         });
     }
@@ -91,11 +111,13 @@ export default function PlacePage(props) {
 
     const masonryCard = ({index, data, width}) => {
         return (
-            <Card key={data.id_place}>
-                <Card.Body>
-                    <Card.Text>{data.description}</Card.Text>
-                </Card.Body>
-            </Card>
+            <div className='m-2'>
+                <Card key={data.id_place}>
+                    <Card.Body>
+                        <Card.Text>{data.description}</Card.Text>
+                    </Card.Body>
+                </Card>
+            </div>
         );
     }
 

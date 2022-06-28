@@ -3,6 +3,7 @@
 namespace Repositories;
 
 use Database\Connection;
+use PDO;
 
 class PlaceRepository {
 
@@ -28,7 +29,18 @@ class PlaceRepository {
     }
 
     public function getAll() {
+        $sql = '
+        SELECT id_place, description
+        FROM place
+        ORDER BY description ASC;
+        ';
 
+        $conn = $this->connection->getConnection();
+        $query = $conn->prepare($sql);
+        
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_BOTH);
+        return $result;
     }
 
 }

@@ -17,6 +17,12 @@ class PlaceController {
         $json = json_encode($result);
         return $json;
     }
+
+    public function getAll() {
+        $result = $this->placeRepository->getAll();
+        $json = json_encode($result);
+        return $json;
+    }
 }
 
 ?>

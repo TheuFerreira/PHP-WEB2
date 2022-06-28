@@ -186,6 +186,19 @@ $app->post('/web2/api/place', function($request, $response, $args) {
     }
 });
 
+$app->get('/web2/api/place/all', function($request, $response, $args) {
+    //try {
+        $controller = new PlaceController();
+        $result = $controller->getAll();
+
+        $response->getBody()->write($result);
+        return $response;
+    /*} catch (Exception) {
+        $newResponse = $response->withStatus(500);
+        return $newResponse;
+    }*/
+});
+
 $app->run();
 
 ?>
