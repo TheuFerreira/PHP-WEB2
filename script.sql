@@ -11,6 +11,11 @@ CREATE TABLE users(
     password TEXT(50) NOT NULL
 );
 
+CREATE TABLE place(
+    id_place INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    description VARCHAR(100) NOT NULL
+);
+
 CREATE TABLE event(
     id_event INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
     id_user INTEGER NOT NULL,
@@ -32,9 +37,4 @@ CREATE TABLE event_user(
     PRIMARY KEY (id_event, id_user),
     FOREIGN KEY (id_event) REFERENCES event (id_event),
     FOREIGN KEY (id_user) REFERENCES users (id_user)
-);
-
-CREATE TABLE place(
-    id_place INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    description VARCHAR(100) NOT NULL
 );

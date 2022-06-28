@@ -17,7 +17,10 @@ const schema = yup
         description: yup.string().required('Insira uma descrição'),
         date: yup.string().required('Insira uma data'),
         hour: yup.string().required('Insira a hora'),
-        local: yup.number().required('Escolha o Local'),
+        local: yup
+            .number()
+            .required()
+            .typeError('Escolha um Local ou crie um'),
     })
     .required();
 
