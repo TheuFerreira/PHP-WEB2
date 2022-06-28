@@ -15,7 +15,7 @@ class EventRepository {
 
     public function getAll() {
         $sql = '
-        SELECT e.id_event, e.id_user, e.title, e.description, e.local, e.date, COUNT(eu.id_user) AS count_peoples 
+        SELECT e.id_event, e.id_user, e.title, e.description, e.id_place, e.date, COUNT(eu.id_user) AS count_peoples 
         FROM event AS e
         LEFT JOIN event_user AS eu ON eu.id_event = e.id_event
         GROUP BY e.id_event
@@ -33,7 +33,7 @@ class EventRepository {
 
     public function getById($idEvent) {
         $sql = '
-        SELECT e.id_event, e.id_user, e.title, e.description, e.local, e.date, COUNT(eu.id_user) AS count_peoples 
+        SELECT e.id_event, e.id_user, e.title, e.description, e.id_place, e.date, COUNT(eu.id_user) AS count_peoples 
         FROM event AS e
         LEFT JOIN event_user AS eu ON eu.id_event = e.id_event
         WHERE e.id_event = ?
@@ -54,9 +54,9 @@ class EventRepository {
         return $row;
     }
 
-    public function insert($idUser, $title, $description, $local, $date, $createdAt) : bool {
+    public function insert($idUser, $title, $description, $idPlace, $date, $createdAt) : bool {
         $sql = '
-        INSERT INTO event (id_user, title, description, local, date, created_at)
+        INSERT INTO event (id_user, title, description, id_place, date, created_at)
         VALUES (?, ?, ?, ?, ?, ?);
         ';
 
@@ -66,7 +66,7 @@ class EventRepository {
         $query->bindValue(1, $idUser);
         $query->bindValue(2, $title);
         $query->bindValue(3, $description);
-        $query->bindValue(4, $local);
+        $query->bindValue(4, $idPlace);
         $query->bindValue(5, $date);
         $query->bindValue(6, $createdAt);
 
@@ -76,7 +76,7 @@ class EventRepository {
 
     public function getAllByUser($idUser) {
         $sql = '
-        SELECT e.id_event, e.id_user, e.title, e.description, e.local, e.date, COUNT(eu.id_user) AS count_peoples 
+        SELECT e.id_event, e.id_user, e.title, e.description, e.id_place, e.date, COUNT(eu.id_user) AS count_peoples 
         FROM event AS e
         LEFT JOIN event_user AS eu ON eu.id_event = e.id_event
         WHERE e.id_user = ?
@@ -96,7 +96,7 @@ class EventRepository {
 
     public function getAllEnteredEvents($idUser) {
         $sql = '
-        SELECT e.id_event, e.id_user, e.title, e.description, e.local, e.date, COUNT(eu.id_user) AS count_peoples 
+        SELECT e.id_event, e.id_user, e.title, e.description, e.id_place, e.date, COUNT(eu.id_user) AS count_peoples 
         FROM event AS e
         LEFT JOIN event_user AS eu ON eu.id_event = e.id_event
         WHERE eu.id_user = ?

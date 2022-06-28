@@ -49,7 +49,7 @@ export default function EventItemComponent(props) {
                 </Card.Body>
 
                 <ListGroup>
-                    <ListGroupItem>Local: {data.local}</ListGroupItem>
+                    <ListGroupItem>Local: {data.place}</ListGroupItem>
                     <ListGroupItem>Data e Hora: {data.date}</ListGroupItem>
                 </ListGroup>
 

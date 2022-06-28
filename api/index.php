@@ -123,11 +123,11 @@ $app->post('/web2/api/event', function ($request, $response, $args) {
         $idUser = $json->id_user;
         $title = $json->title;
         $description = $json->description;
-        $local = $json->local;
+        $idPlace = $json->id_place;
         $date = $json->date;
 
         $controller = new EventController();
-        $result = $controller->create($idUser, $title, $description, $local, $date);
+        $result = $controller->create($idUser, $title, $description, $idPlace, $date);
 
         $response->getBody()->write($result);
         return $response;

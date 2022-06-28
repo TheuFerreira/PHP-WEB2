@@ -8,6 +8,7 @@ import { create } from '../repositories/CreateEventRepository';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import LoadingButton from '../../components/loading_button/LoadingButton';
 import { ToastContainer, toast } from 'react-toastify';
+import { getAll } from '../../place/repositories/PlaceRepository';
 
 const schema = yup
     .object()
@@ -16,13 +17,14 @@ const schema = yup
         description: yup.string().required('Insira uma descrição'),
         date: yup.string().required('Insira uma data'),
         hour: yup.string().required('Insira a hora'),
-        local: yup.string().required('Insira o Local'),
+        local: yup.number().required('Escolha o Local'),
     })
     .required();
 
 export default function CreateEventPage(props) {
 
     const [usuario] = useContext(Context);
+    const [places, setPlaces] = useState([]);
     const [isLoadingButton, setLoadingButton] = useState(false);
     const {
         register,
@@ -35,6 +37,15 @@ export default function CreateEventPage(props) {
 
     useEffect(() => {
         document.title = 'Eventos - Novo Evento';
+
+        getAll().then((response) => {
+            if (response.message !== undefined) {
+                toast.error(response.message);
+                return;
+            }
+
+            setPlaces(response.data);
+        });
     }, []);
 
     const onSubmit = async (data) => {
@@ -109,10 +120,19 @@ export default function CreateEventPage(props) {
 
                                 <Form.Group>
                                     <Form.Label>Local:</Form.Label>
-                                    <Form.Control
+                                    <Form.Select
                                         className={`form-control ${errors.local ? 'is-invalid' : ''}`}
                                         {...register('local')}
-                                    />
+                                    >
+                                        { 
+                                            places.map((x) => 
+                                                <option 
+                                                    key={x.id_place} 
+                                                    value={x.id_place}
+                                                >{x.description}</option> 
+                                            ) 
+                                        }
+                                    </Form.Select>
 
                                     <Form.Control.Feedback type='invalid'>
                                         {errors.local?.message}

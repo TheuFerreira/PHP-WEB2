@@ -1,12 +1,12 @@
 import { ipAPI } from '../../utils/ips';
 
-export async function create(idUser, title, description, date, local) {
+export async function create(idUser, title, description, date, place) {
     const data = {
         "id_user": parseInt(idUser),
         "title": title,
         "description": description,
         "date": date,
-        "local": local
+        "id_place": place
     };
 
     const result = await fetch(`${ipAPI}/event`, {

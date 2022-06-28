@@ -43,6 +43,22 @@ class PlaceRepository {
         return $result;
     }
 
+    public function getDescriptionById($idPlace) : string {
+        $sql = '
+        SELECT description
+        FROM place
+        WHERE id_place = ?;
+        ';
+
+        $conn = $this->connection->getConnection();
+        $query = $conn->prepare($sql);
+
+        $query->bindValue(1, $idPlace);
+        
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result['description'];
+    }
 }
 
 ?>
