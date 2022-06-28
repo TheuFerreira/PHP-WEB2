@@ -8,6 +8,7 @@ header("Access-Control-Allow-Methods: GET, POST, DELETE");
 
 use Controllers\EventController;
 use Controllers\LoginController;
+use Controllers\PlaceController;
 use Controllers\UserController;
 use Errors\ExistsException;
 use Errors\NotFoundException;
@@ -163,6 +164,24 @@ $app->get('/web2/api/user/EnteredEvents/{id_user}', function($request, $response
         return $response;
     } catch (Exception) {
         $newResponse = $response->getBody()->withStatus(500);
+        return $newResponse;
+    }
+});
+
+// Place
+$app->post('/web2/api/place', function($request, $response, $args) {
+    try {
+        $body = $request->getBody();
+        $json = json_decode($body);
+
+        $description = $json->description;
+        $controller = new PlaceController();
+        $result = $controller->create($description);
+
+        $response->getBody()->write($result);
+        return $response;
+    } catch (Exception) {
+        $newResponse = $response->withStatus(500);
         return $newResponse;
     }
 });

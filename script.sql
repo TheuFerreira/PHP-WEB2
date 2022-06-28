@@ -32,3 +32,8 @@ CREATE TABLE event_user(
     FOREIGN KEY (id_event) REFERENCES event (id_event),
     FOREIGN KEY (id_user) REFERENCES users (id_user)
 );
+
+CREATE TABLE place(
+    id_place INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    description VARCHAR(100) NOT NULL
+);
