@@ -8,7 +8,7 @@ import { create } from '../repositories/CreateEventRepository';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import LoadingButton from '../../components/loading_button/LoadingButton';
 import { ToastContainer, toast } from 'react-toastify';
-import { getAll } from '../../place/repositories/PlaceRepository';
+import { getAll } from '../repositories/PlaceRepository';
 import { Plus } from 'react-bootstrap-icons';
 import AddPlaceModal from './modals/AddPlaceModal';
 
@@ -158,7 +158,13 @@ export default function CreateEventPage(props) {
                                         </div>
 
                                         <div className='d-flex align-items-start'>
-                                            <Button onClick={() => setShowAddPlace(true)}>
+                                            <Button 
+                                                onClick={() => setShowAddPlace(true)}
+                                                style={{
+                                                    backgroundColor: '#0b549e',
+                                                    borderColor: '#0b549e'
+                                                }}
+                                            >
                                                 <Plus size={20}/>
                                             </Button>
                                         </div>

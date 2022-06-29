@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import LoadingButton from "../../../components/loading_button/LoadingButton";
 import { useEffect, useState } from "react";
-import { add } from "../../../place/repositories/PlaceRepository";
+import { add } from "../../repositories/PlaceRepository";
 import { toast } from "react-toastify";
 
 const schema = yup
