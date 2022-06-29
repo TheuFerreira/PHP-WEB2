@@ -19,18 +19,11 @@ const schema = yup
     })
     .required();
 
-const _places = [
-    {
-        "id_place": 1,
-        "description": "SJE"
-    }
-];
-
 export default function PlacePage(props) {
 
     const [loadingButton, setLoadingButton] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [places, setPlaces] = useState(_places);
+    const [places, setPlaces] = useState([]);
     const {
         register,
         handleSubmit,

@@ -5,7 +5,7 @@ export async function add(description) {
         "description": description,
     };
 
-    fetch(`${ipAPI}/place`, {
+    const result = await fetch(`${ipAPI}/place`, {
         method: 'POST',
         body: JSON.stringify(body)
     }).then((response) => {
@@ -23,6 +23,8 @@ export async function add(description) {
             message: error.message
         };
     });
+
+    return result;
 }
 
 export async function getAll() {

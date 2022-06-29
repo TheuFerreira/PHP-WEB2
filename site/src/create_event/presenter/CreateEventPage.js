@@ -5,10 +5,12 @@ import Menu from '../../components/menu/Menu';
 import { useContext, useEffect, useState } from 'react';
 import Context from '../../Context/Context';
 import { create } from '../repositories/CreateEventRepository';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import LoadingButton from '../../components/loading_button/LoadingButton';
 import { ToastContainer, toast } from 'react-toastify';
 import { getAll } from '../../place/repositories/PlaceRepository';
+import { Plus } from 'react-bootstrap-icons';
+import AddPlaceModal from './modals/AddPlaceModal';
 
 const schema = yup
     .object()
@@ -29,6 +31,7 @@ export default function CreateEventPage(props) {
     const [usuario] = useContext(Context);
     const [places, setPlaces] = useState([]);
     const [isLoadingButton, setLoadingButton] = useState(false);
+    const [showAddPlace, setShowAddPlace] = useState(false);
     const {
         register,
         handleSubmit,
@@ -41,15 +44,18 @@ export default function CreateEventPage(props) {
     useEffect(() => {
         document.title = 'Eventos - Novo Evento';
 
-        getAll().then((response) => {
-            if (response.message !== undefined) {
-                toast.error(response.message);
-                return;
-            }
-
-            setPlaces(response.data);
-        });
+        loadAllPlaces();
     }, []);
+
+    const loadAllPlaces = async () => {
+        const response = await getAll();
+        if (response.message !== undefined) {
+            toast.error(response.message);
+            return;
+        }
+    
+        setPlaces(response.data);
+    }
 
     const onSubmit = async (data) => {
         const date = `${data.date}T${data.hour}`;
@@ -67,9 +73,15 @@ export default function CreateEventPage(props) {
         reset();
     }
 
+    const onAddedLocal = () => {
+        setShowAddPlace(false);
+        loadAllPlaces();
+    };
+
     return (
         <div>
             <ToastContainer/>
+            <AddPlaceModal show={showAddPlace} onAdded={onAddedLocal} onClose={() => setShowAddPlace(false)}/>
 
             <Menu/>
 
@@ -123,23 +135,36 @@ export default function CreateEventPage(props) {
 
                                 <Form.Group>
                                     <Form.Label>Local:</Form.Label>
-                                    <Form.Select
-                                        className={`form-control ${errors.local ? 'is-invalid' : ''}`}
-                                        {...register('local')}
-                                    >
-                                        { 
-                                            places.map((x) => 
-                                                <option 
-                                                    key={x.id_place} 
-                                                    value={x.id_place}
-                                                >{x.description}</option> 
-                                            ) 
-                                        }
-                                    </Form.Select>
 
-                                    <Form.Control.Feedback type='invalid'>
-                                        {errors.local?.message}
-                                    </Form.Control.Feedback>
+                                    <div className='d-flex flex-row'>
+                                        <div className='d-flex flex-column w-100 me-2'>
+                                            <Form.Select
+                                                className={`form-control ${errors.local ? 'is-invalid' : ''}`}
+                                                {...register('local')}
+                                            >
+                                                { 
+                                                    places.map((x) => 
+                                                        <option 
+                                                            key={x.id_place} 
+                                                            value={x.id_place}
+                                                        >{x.description}</option> 
+                                                    ) 
+                                                }
+                                            </Form.Select>
+
+                                            <Form.Control.Feedback type='invalid'>
+                                                {errors.local?.message}
+                                            </Form.Control.Feedback>
+                                        </div>
+
+                                        <div className='d-flex align-items-start'>
+                                            <Button onClick={() => setShowAddPlace(true)}>
+                                                <Plus size={20}/>
+                                            </Button>
+                                        </div>
+
+                                    </div>
+
                                 </Form.Group>
 
                                 <div className='d-flex flex-row'>
