@@ -10,10 +10,6 @@ export default function Menu(props) {
     const navigate = useNavigate();
     const [usuario, setUsuario] = useContext(Context);
     
-    const onPlace = () => {
-        navigate('/Locais');
-    }
-
     const onNewEvent = () => {
         navigate('/CriarEvento');
     }
@@ -40,13 +36,6 @@ export default function Menu(props) {
                 </Navbar.Collapse>
 
                 <Navbar.Collapse className='justify-content-end'>
-                    <Nav.Link
-                        href="#"
-                        onClick={onPlace}
-                        style={{
-                            color: '#0b549e',
-                        }}
-                    >Locais</Nav.Link>
                     <Nav.Link 
                         href='#' 
                         onClick={onNewEvent}

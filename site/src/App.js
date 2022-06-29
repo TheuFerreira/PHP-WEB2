@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import Context from "./Context/Context";
 import Cookies from 'universal-cookie';
 import 'react-toastify/dist/ReactToastify.css';
-import PlacePage from "./place/presenter/PlacePage";
 
 function App() {
   const [usuario, setUsuario] = useState(null);
@@ -45,7 +44,6 @@ function App() {
             <Route path="/" element={<HomePage/>}/>
             <Route path="/Conta" element={<AccountPage/>}/>
             <Route path="/CriarEvento" element={<CreateEventPage/>}/>
-            <Route path='/Locais' element={<PlacePage/>}/>
           </Routes>
         </BrowserRouter>
       ) }
