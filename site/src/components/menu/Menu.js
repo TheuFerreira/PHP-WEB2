@@ -17,6 +17,7 @@ export default function Menu(props) {
     const onExit = () => {
         const cookie = new Cookies();
         cookie.remove('user');
+        navigate('/');
         setUsuario(null);
     }
 
