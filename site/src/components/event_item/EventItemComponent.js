@@ -10,7 +10,13 @@ export default function EventItemComponent(props) {
 
     const onEnter = async () => {
         setLoading(true);
-        await props.onClick(data.id_event);
+        await props.onEnter(data.id_event);
+        setLoading(false);
+    }
+
+    const onExit = async () => {
+        setLoading(true);
+        props.onExit(data.id_event);
         setLoading(false);
     }
 
@@ -23,7 +29,11 @@ export default function EventItemComponent(props) {
 
         if (data.is_in_event) {
             return (
-                <span>Ingressado</span>
+                <LoadingButton 
+                    color='red' 
+                    loading={loading} 
+                    onClick={onExit}
+                >Sair</LoadingButton>
             );
         }
 

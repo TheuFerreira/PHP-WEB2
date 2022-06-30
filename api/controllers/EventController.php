@@ -57,29 +57,9 @@ class EventController {
         return $json;
     }
 
-    public function getById($idEvent, $idUser) {
-        $row = $this->eventRepository->getById($idEvent);
-        if ($row == null) {
-            throw new NotFoundException();
-        }
-
-        $idEvent = intval($row['id_event']);
-        $idPlace = intval($row['id_place']);
-
-        $obj['id_event'] = $idEvent ;
-        $obj['id_user'] = intval($row['id_user']);
-        $obj['title'] = $row['title'];
-        $obj['description'] = $row['description'];
-        $obj['date'] = $row['date'];
-        $obj['count_peoples'] = intval($row['count_peoples']);
-
-        $userIsInEvent = $this->eventUserRepository->checkUserIsInEvent($idEvent , $idUser);
-        $obj['is_in_event'] = $userIsInEvent;
-
-        $placeDescription = $this->placeRepository->getDescriptionById($idPlace);
-        $obj['place'] = $placeDescription;
-        
-        $json = json_encode($obj);
+    public function exit($idEvent, $idUser) {
+        $result = $this->eventUserRepository->delete($idEvent, $idUser);
+        $json = json_encode($result);
         return $json;
     }
 

@@ -46,17 +46,21 @@ export async function enterInEvent(idEvent, idUser) {
     return result;
 }
 
-export async function getEventById(idEvent, idUser) {
-    const result = await fetch(`${ipAPI}/event/${idUser}/${idEvent}`, {
-        method: 'GET',
-    }).then((res) => {
-        if (res.status === 204) {
-            throw new Error('Evento não encontrado');
-        } else if (!res.ok) {
+export async function exitOfEvent(idEvent, idUser) {
+    const data = {
+        "id_event": idEvent,
+        "id_user": idUser
+    };
+
+    const result = await fetch(`${ipAPI}/event/exit`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+    }).then((response) => {
+        if (!response.ok) {
             throw new Error('Estamos com problemas');
         }
 
-        return res.json();
+        return response.json();
     }).then((json) => {
         return {
             data: json

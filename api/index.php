@@ -96,19 +96,19 @@ $app->post('/web2/api/event/enter', function ($request, $response, $args) {
     }
 });
 
-$app->get('/web2/api/event/{id_user}/{id_event}', function ($request, $response, $args) {
+$app->post('/web2/api/event/exit', function ($request, $response, $args) {
     try {
-        $idUser = $args['id_user'];
-        $idEvent = $args['id_event'];
-        
+        $body = $request->getBody();
+        $json = json_decode($body);
+
+        $idEvent = $json->id_event;
+        $idUser = $json->id_user;
+
         $controller = new EventController();
-        $result = $controller->getById($idEvent, $idUser);
+        $result = $controller->exit($idEvent, $idUser);
 
         $response->getBody()->write($result);
         return $response;
-    } catch (NotFoundException) {
-        $newResponse = $response->withStatus(204);
-        return $newResponse;
     } catch (Exception) {
         $newResponse = $response->withStatus(500);
         return $newResponse;

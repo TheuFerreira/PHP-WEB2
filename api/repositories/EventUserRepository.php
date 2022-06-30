@@ -48,6 +48,23 @@ class EventUserRepository {
         $isInEvent = $row['count'] > 0;
         return $isInEvent;
     }
+
+    public function delete($idEvent, $idUser) : bool {
+        $sql = '
+        DELETE FROM event_user 
+        WHERE id_event = ? 
+            AND id_user = ?;        
+        ';
+
+        $conn = $this->connection->getConnection();
+        $query = $conn->prepare($sql);
+
+        $query->bindValue(1, $idEvent);
+        $query->bindValue(2, $idUser);
+
+        $result = $query->execute();
+        return $result;
+    }
 }
 
 ?>

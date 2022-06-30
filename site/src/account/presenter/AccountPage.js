@@ -8,6 +8,7 @@ import { getAllEnteredEventsByUser, getAllEventsByUser } from '../repositories/A
 import { ToastContainer, toast } from 'react-toastify';
 import EventNotFound from "../../components/event_not_found/EventNotFound";
 import Loading from "../../components/loading/Loading";
+import { exitOfEvent } from "../../home/repositories/HomeRepository";
 
 export default function AccountPage() {
 
@@ -69,13 +70,37 @@ export default function AccountPage() {
             width={width}
             data={data}
             usuario={usuario}
+            onExit={onExitEvent}
         /> 
+    }
+
+    const onExitEvent = async (idEvent) => {
+        const result = await exitOfEvent(idEvent, idUser);
+        if (result.message !== undefined) {
+            toast.error(result.message);
+            return;
+        }
+
+        updateEvent(idEvent);
+    }
+
+    const updateEvent = async (idEvent) => {
+        let index = -1;
+        for (let i = 0; i < participatedEvents.length; i++) {
+            if (participatedEvents[i].id_event === idEvent) {
+                index = i;
+            }
+        }
+
+        let tempEvents = [...participatedEvents];
+        tempEvents.splice(index, 1);
+
+        setParticipatedEvents(tempEvents);
     }
 
     return (
         <div>
             <ToastContainer/>
-            
             <Menu/>
 
             <Container className='mt-2 mb-4'>

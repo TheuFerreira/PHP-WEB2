@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Menu from "../../components/menu/Menu";
 import EventItemComponent from '../../components/event_item/EventItemComponent';
-import { getAllEvents, enterInEvent, getEventById } from '../repositories/HomeRepository';
+import { getAllEvents, enterInEvent, exitOfEvent } from '../repositories/HomeRepository';
 import Context from '../../Context/Context';
 import { Masonry } from 'masonic';
 import { Container, Row } from "react-bootstrap";
@@ -33,32 +33,41 @@ export default function HomePage() {
             width={width}
             data={data}
             usuario={usuario}
-            onClick={(idEvent) => onEnterEvent(idEvent)}
+            onEnter={(idEvent) => onEnterEvent(idEvent)}
+            onExit={(idEvent) => onExitEvent(idEvent)}
         /> 
     }
 
     const onEnterEvent = async (idEvent) => {
-        let result = await enterInEvent(idEvent, idUser);
+        const result = await enterInEvent(idEvent, idUser);
         if (result.message !== undefined) {
             toast.error(result.message);
             return;
         }
 
-        result = await getEventById(idEvent, idUser);
+        updateEvent(idEvent, true);
+    }
+
+    const onExitEvent = async (idEvent) => {
+        const result = await exitOfEvent(idEvent, idUser);
         if (result.message !== undefined) {
             toast.error(result.message);
             return;
         }
 
+        updateEvent(idEvent, false);
+    }
+
+    const updateEvent = async (idEvent, entered) => {
         let index = -1;
         for (let i = 0; i < events.length; i++) {
-            if (events[i].id_event === result.data.id_event) {
+            if (events[i].id_event === idEvent) {
                 index = i;
             }
         }
 
         let tempEvents = [...events];
-        tempEvents[index] = result.data;
+        tempEvents[index].is_in_event = entered;
 
         setEvents(tempEvents);
     }

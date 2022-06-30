@@ -37,8 +37,8 @@ export default function LoadingButton(props) {
             className='position-relative'
             onClick={onClick}
             style={{
-                backgroundColor: '#0b549e',
-                borderColor: '#0b549e'
+                backgroundColor: props.color ? props.color : '#0b549e',
+                borderColor: props.color ? props.color : '#0b549e'
             }}
         >
             { showSpinner() }
