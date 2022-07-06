@@ -1,1 +1,1 @@
-export const ipAPI = 'http://localhost/web2/api';
+export const ipAPI = 'https://web2-production.up.railway.app/web2/api';
